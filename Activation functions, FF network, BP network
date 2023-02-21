@@ -1,0 +1,89 @@
+## defining the number of layers, Neurons in each layer, and number of classes.
+
+L = int(input("Enter the number of Hidden + outer layer: "))
+n = int(input("Enter the numbers of neuron in each hidden layer: "))
+no_of_classes = np.unique(y_train)
+
+## Initialize weights
+
+weights = np.random.rand(L-1, n, n)
+weights_Lth_layer = np.random.rand(no_of_classes, n)
+bias = np.random.rand(L-1, n)
+bias_Lth_layer = np.random(no_of_classes)
+
+## Activation Functions
+
+def sigmoid(a):
+  return 1/(1+np.exp(-a))
+
+def tanh(a):
+  return (np.exp(a)-np.exp(-a))/(np.exp(a)+np.exp(-a))
+
+def ReLu(a):
+  return max(0, a)
+
+def softmax(a):
+  exp_logits = np.exp(a)
+  return exp_logits / np.sum(exp_logits, axis=0, keepdims=True)   # axis = 1 may be used
+
+def der_sigmoid(a):
+  return sigmoid(a)*(1-sigmoid(a))
+
+def der_tanh(a):
+  return 1-(tanh(a)*tanh(a))
+
+def der_ReLu(a):
+  return max(0,1)
+  
+## Forward propagation function
+
+def forward_propagation(weights, weights_Lth_layer, bias, bias_Lth_layer, h, L):
+  
+  outputs = []
+  ## for hidden layers
+  for k in range(1, L):
+    a = np.dot(weights[k],np.transpose(h)) + bias[k]
+    outputs.append(a)
+    ## default activation function is sigmoid 
+    act_functions = [sigmoid(a), tanh(a), ReLu(a)]
+    h = act_functions[0]
+    outputs.append(h)
+
+    ## In outer layer softmax function
+    a = np.dot(weights_Lth_layer, np.transpose(h)) + bias_Lth_layer
+    outputs.append(a)
+    y_dash = softmax(a)
+    outputs.append(y_dash)
+
+  return outputs
+  
+ ## Backpropagation Function
+  
+ def backward_propagation(outputs, y_train, weights, weights_Lth_layer):
+
+    def e(y_train):
+      size = len(y_train)
+      temp = np.zeros((size))
+      i = 0
+      for num in y_train:
+        temp[i][num] = 1
+        i+=1
+      return temp
+
+    output_gradient = -(e(y_train) - y_dash)
+    for k in range(L, 0, -1):
+      ## compute gradients w.r.t parameters
+      W_gradient = np.dot(output_gradient, outputs[2*k-2])
+      b_gradients = output_gradient
+
+      ## compute gradients w.r.t layer below
+      if k==L:
+        weight = weights_Lth_layer
+      else:
+        weight = weights[k-1]
+      h_gradient = np.dot(np.transpose(weights[k]), output_gradient)
+
+      ## compute the gradient of pre activation layer
+      output_gradient = np.multiply(h_gradient, )
+
+
