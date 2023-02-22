@@ -9,6 +9,8 @@ import matplotlib.pyplot as plt
 
 fashion_mnist_data = fashion_mnist.load_data()
 (x_train, y_train), (x_test, y_test) = fashion_mnist_data
+x_train = x_train.reshape(x_train.shape[0], -1)/255
+x_test = x_test.reshape(x_test.shape[0], -1)/255
 
 ## plot 1 sample image for each class 
 
@@ -31,7 +33,7 @@ for i in range(num_images):
     idx = np.where(y_train == i % no_of_classes)[0][i // no_of_classes]
     
     # Plot the image
-    axes[row, col].imshow(x_train[idx], cmap='gray')
+    axes[row, col].imshow(x_train[idx].reshape(28,28), cmap='gray')
     axes[row, col].set_title(class_names[i % no_of_classes])
     axes[row, col].axis('off')
 
