@@ -71,12 +71,12 @@ def der_ReLu(a):
   
 ## Forward propagation function
 
-def forward_propagation(weights, weights_Lth_layer, bias, bias_Lth_layer, h, L):
+def forward_propagation(Weights, bias, bias_Lth_layer, h, L):
   
   a_out = []
   h_out = []
   ## for hidden layers
-  for k in range(1, L):
+  for k in range(L-1):
     a = np.dot(weights[k],np.transpose(h)) + bias[k]
     a_out.append(a)
     ## default activation function is sigmoid 
@@ -85,7 +85,7 @@ def forward_propagation(weights, weights_Lth_layer, bias, bias_Lth_layer, h, L):
     h_out.append(h)
 
   ## In outer layer softmax function
-  a = np.dot(weights_Lth_layer, np.transpose(h)) + bias_Lth_layer
+  a = np.dot(Weights[L-1], np.transpose(h)) + bias_Lth_layer
   a_out.append(a)
   y_dash = softmax(a)
   h_out.append(y_dash)
