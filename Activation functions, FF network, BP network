@@ -42,8 +42,8 @@ def weights(choice, n, L, no_of_classes):
   return Weights
   
 Weights = weights(choice, n=5, L=3, no_of_classes=10)
-bias = np.random.rand(L-1, n)
-bias_Lth_layer = np.random.rand(no_of_classes)
+bias = np.random.rand(L-1, len(x_train), n)
+bias_Lth_layer = np.random.rand(len(x_train), no_of_classes)
 
 ## Activation Functions
 
