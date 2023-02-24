@@ -10,7 +10,7 @@ no_of_classes = len(np.unique(y_train))
 choice = int(input("For random weights initialisation enter 1 and for xavier enter 2: "))
 
  # function to initialize weights
-def weights(choice, n, L, no_of_classes):
+def weights(choice, n, L, x_train, no_of_classes):
   
   Weights = []
   np.random.seed(0)
