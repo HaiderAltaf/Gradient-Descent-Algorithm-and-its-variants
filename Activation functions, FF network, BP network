@@ -75,22 +75,23 @@ def forward_propagation(Weights, bias, bias_Lth_layer, h, L):
   
   a_out = []
   h_out = []
+  h_out.append(h)
+  
   ## for hidden layers
   for k in range(L-1):
-    a = np.dot(weights[k],np.transpose(h)) + bias[k]
+    a = np.dot(h, Weights[k]) + bias[k]
     a_out.append(a)
     ## default activation function is sigmoid 
-    act_functions = [sigmoid(a), tanh(a), ReLu(a)]
-    h = act_functions[0]
+    h = sigmoid(a)
     h_out.append(h)
 
   ## In outer layer softmax function
-  a = np.dot(Weights[L-1], np.transpose(h)) + bias_Lth_layer
+  a = np.dot(h, Weights[L-1]) + bias_Lth_layer
   a_out.append(a)
   y_dash = softmax(a)
-  h_out.append(y_dash)
+  
 
-  return a_out, h_out
+  return a_out, h_out, y_dash
 
   
  ## Backpropagation Function
