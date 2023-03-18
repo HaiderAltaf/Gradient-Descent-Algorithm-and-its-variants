@@ -7,32 +7,34 @@ Original file is located at
     https://colab.research.google.com/drive/1iiY15hAKjrZNTfpjtp7A0SOT-PSFOQse
 
 # Question 1
-Download the fashion-MNIST dataset and plot 1 sample image for each class as shown in the grid below. Use from keras.datasets import fashion_mnist for getting the fashion mnist dataset. Show each sample class in wandb
+Download the fashion-MNIST dataset and plot 1 sample image for each class. Show each sample class in wandb
 """
-
 import numpy as np
 import pandas as pd
 from keras.datasets import fashion_mnist
 import matplotlib.pyplot as plt
 import math
 
+## installing the wandb 
 !pip install wandb
 import wandb
 
+## split the dataset into train and test
 (x_train, y_train), (x_test, y_test) = fashion_mnist.load_data()
 X_train = x_train.reshape(x_train.shape[0], x_train.shape[1]*x_train.shape[2] )/255
 X_test = x_test.reshape(x_test.shape[0], x_test.shape[1]*x_test.shape[2])/255
 
-validation_size = int(len(X_train)*0.1)
+## split the train dataset for the validation of the model(10%)
 
+validation_size = int(len(X_train)*0.1)
 # randomly shuffle the indices of the data
 shuffled_indices = np.random.permutation(len(X_train))
-
 # split the shuffled data into training and validation sets
 train_indices, validation_indices = shuffled_indices[:-validation_size], shuffled_indices[-validation_size:]
 X_train, X_validation = X_train[train_indices], X_train[validation_indices]
 y_train, y_validation = y_train[train_indices], y_train[validation_indices]
 
+## initialized the wandb project
 wandb.init(entity= "am22s020", project="cs6910_trial")
 
 """# Function to plot images of each class present in the fashion mnist dataset"""
