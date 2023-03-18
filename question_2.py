@@ -11,6 +11,8 @@ Original file is located at
 
 import numpy as np
 
+## activation functions needed for the forward propagation
+
 def batch_normalize(a):
     mean = np.mean(a, axis=0, keepdims=True)
     var = np.var(a, axis=0, keepdims=True)
@@ -31,25 +33,7 @@ def softmax(a):
   a = a - np.max(a)
   return np.exp(a)/np.sum(np.exp(a))
    
-
-def der_softmax(a):
-  return softmax(a)*(1- softmax(a))
-  
-def der_sigmoid(a):
-  return sigmoid(a)*(1-sigmoid(a))
-
-def der_tanh(a):
-  return 1-(tanh(a)*tanh(a))
-
-def der_ReLu(a):
-
-  # it will create a matrix of same dimension as of a.
-  gradient = np.zeros_like(a)  
-  # sets the entries of gradient to 1 where the corresponding entries of x>=0
-  gradient[a >=0] = 1
-  gradient[a < 0] = 0
-
-  return gradient
+## The forward propagation function
 
 def forward_propagation( Weights, bias, x_input, hid_layer, acti_fun, weight_init):
   """
