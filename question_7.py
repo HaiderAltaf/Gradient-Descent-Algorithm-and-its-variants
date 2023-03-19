@@ -36,7 +36,7 @@ from activation_fun import ReLu, sigmoid, tanh
 
 """Installing and importing wandb"""
 
-!pip install wandb
+#!pip install wandb
 import wandb
 
 ## importing the dataset
