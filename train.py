@@ -22,8 +22,6 @@ Original file is located at
 Argparse
 """
 
-#parser.add_argument('-f')
-
 import argparse
 
 parser = argparse.ArgumentParser(description="Stores all the hyperpamaters for the model.")
