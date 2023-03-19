@@ -8,7 +8,7 @@ Original file is located at
 
 #function to find the accuracy
 """
-
+import numpy as np
 from question_2 import forward_propagation
 
 def model_accuracy(X, Y, Weights, bias, hid_layer, acti_fun,weight_init):
