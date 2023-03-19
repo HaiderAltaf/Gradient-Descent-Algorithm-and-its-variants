@@ -5,6 +5,8 @@ I have used fashion_mnist dataset  and divided it into train, validation and tes
 
 The assignment contains 10 Question.<br />
 
+*Description of different files submitted for the fulfillment of the assignment.<br />*
+
 question_1.py - In this python file i have imported the fashion_mnist dataset and the necessary libraries. Then plotted images of all the ten classes. Then uploaded the images to wandb.ai website <br />
 
 weights_bias.py - this python file contains the function to initialize the weights and biases(random or xavier).<br />
