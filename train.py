@@ -86,7 +86,6 @@ from question_2 import forward_propagation, batch_normalize
 from weights_bias import weights_bias
 from question_3 import gradient_descent, momentum_gd, adaDelta, nag, rmsprop, adam, nadam
 
-# !pip install wandb
 import wandb
 
 """Loading dataset and splitting in train and test data"""
