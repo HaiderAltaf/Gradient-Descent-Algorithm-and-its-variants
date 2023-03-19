@@ -48,7 +48,7 @@ def backward_propagation(X_train, batch_size, a_out, h_out, y_train, y_dash, Wei
   y_train_modified[y_train] = 1
   
   L2_loss = 0
-  
+  ## Adding l2 regulation loss
   for i in range(len(Weights)):
       L2_loss += L2_decay*np.sum(Weights[i])/len(X_train)
   if loss_fu =='cross_entropy':
@@ -120,18 +120,11 @@ def gradient_descent(learning_rate, Weights, bias, hid_layer, no_of_neuron,
     num_points_seen+=1
     
     if num_points_seen%batch_size == 0:
-        
-      #if acti_fun == 'ReLu':
-      #dW = [batch_normalize(dW[i]) for i in range(len(dW))]
 
       # Weights updates
       
       Weights = [Weights[i] - dW[i]*learning_rate for i in range(L)]
-    
-#       # normalize the weights if activation function is ReLu
-#       if acti_fun == 'ReLu':
-#          Weights = [batch_normalize(Weights[i]) for i in range(len(Weights))]
-
+   
       # Biases updates
       bias = [bias[i] - dB[i]*learning_rate for i in range(L)]
 
@@ -142,9 +135,6 @@ def gradient_descent(learning_rate, Weights, bias, hid_layer, no_of_neuron,
   # Training loss of an epoch
   loss  = model_loss(X_train, y_train, Weights, bias, hid_layer, loss_fu,
                L2_decay, X_train, acti_fun,weight_init)
- 
-
-  #print(epoch, loss)
 
   return Weights, bias, loss
 
@@ -194,10 +184,6 @@ def momentum_gd(prev_uw, prev_ub, Weights, bias, hid_layer,
       ## Weights and biases updates
       # Weights updates
       Weights = [Weights[i] - uw[i]*learning_rate for i in range(len(uw))]
-    
-#       # normalize the weights if activation function is ReLu
-#       if acti_fun == 'ReLu':
-      #Weights = [batch_normalize(Weights[i]) for i in range(len(Weights))]
 
       # Biases updates
       bias = [bias[i] - ub[i]*learning_rate for i in range(len(ub))]
@@ -262,10 +248,8 @@ def nag(prev_vw, prev_vb, Weights, bias, hid_layer,
 
     if num_points_seen%batch_size==0:
         
-       # normalize the gradient if activation function is ReLu
-      #if acti_fun == 'ReLu':
-      #dW = [batch_normalize(dW[i]) for i in range(len(dW))]
-
+      # normalize the gradient 
+      dW = [batch_normalize(dW[i]) for i in range(len(dW))]
 
       ## momentum based wight updates
       vw = [prev_vw[i]*beta + dW[i] for i in range(len(dW))]
@@ -276,7 +260,7 @@ def nag(prev_vw, prev_vb, Weights, bias, hid_layer,
         
 #       # normalize the weights if activation function is ReLu
 #       if acti_fun == 'ReLu':
-      #Weights = [batch_normalize(Weights[i]) for i in range(len(Weights))]
+      Weights = [batch_normalize(Weights[i]) for i in range(len(Weights))]
 
       # Biases updates
       bias = [bias[i] - vb[i]*learning_rate for i in range(len(vb))]
@@ -285,7 +269,7 @@ def nag(prev_vw, prev_vb, Weights, bias, hid_layer,
       prev_uw = vw
       prev_ub = vb
 
-      #dW,dB = weights_bias(3, n, L, X_train, no_of_classes)
+      dW,dB = weights_bias(3, n, L, X_train, no_of_classes)
       
    # Training loss of an epoch
   loss  = model_loss(X_train, y_train, Weights, bias, hid_layer, loss_fu,
@@ -348,7 +332,6 @@ def adagrad(v_w, v_b, Weights, bias, hid_layer, no_of_neuron, X_train, y_train,
       bias = [bias[i] - learning_rate*dB[i]/(np.sqrt(v_b[i])+eps) for i in range(len(bias))]
 
       dW, dB = weights_bias(3, n, L, X_train, no_of_classes)
-      #dB = biases(3, n, L, y_train, no_of_classes)
   
    # Training loss of an epoch
   loss  = model_loss(X_train, y_train, Weights, bias, hid_layer, loss_fu,
@@ -395,9 +378,6 @@ def rmsprop(v_w, v_b, Weights, bias, hid_layer, no_of_neuron,
     if num_points_seen%batch_size==0:
         
       dW = [batch_normalize(dW[i]) for i in range(len(dW))]
-
-      ## Add L2 regularization penalty to gradient
-      #dW = [dW[i] + L2_decay*Weights[i] for i in range(len(dW))]
 
       #compute intermediate values
       v_w = [beta*v_w[i] + (1-beta)*(dW[i]**2) for i in range(len(grad_W))]
@@ -460,12 +440,8 @@ def adaDelta(u_w, u_b, v_w, v_b, Weights, bias, hid_layer,
 
     if num_points_seen%batch_size==0:
         
-      # normalize the gradient if activation function is ReLu
-      #if acti_fun == 'ReLu':
+      # normalize the gradient
       dW = [batch_normalize(dW[i]) for i in range(len(dW))]
-
-      ## Add L2 regularization penalty to gradient
-     # dW = [dW[i] + L2_decay*Weights[i] for i in range(len(dW))]
 
       #compute intermediate values
       v_w = [beta*v_w[i] + (1-beta)*(dW[i]**2) for i in range(len(grad_W))]
@@ -480,8 +456,6 @@ def adaDelta(u_w, u_b, v_w, v_b, Weights, bias, hid_layer,
       # Weights updates
       Weights = [Weights[i] - del_w[i] for i in range(len(del_w))]
         
-#       # normalize the weights if activation function is ReLu
-#       if acti_fun == 'ReLu':
       Weights = [batch_normalize(Weights[i]) for i in range(len(Weights))]
 
       # Biases updates
@@ -532,8 +506,7 @@ def adam(epoch, m_w, m_b, v_w, v_b, Weights,
 
     if num_points_seen%batch_size==0:
       
-     # normalize the gradient if activation function is ReLu
-#       if acti_fun == 'ReLu':
+     # normalize the gradient 
       dW = [batch_normalize(dW[i]) for i in range(len(dW))]
             
 
@@ -553,8 +526,7 @@ def adam(epoch, m_w, m_b, v_w, v_b, Weights,
       # Weights updates
       Weights = [Weights[i] - learning_rate*m_w_hat[i]/(np.sqrt(v_w_hat[i])+eps) for i in range(len(Weights))]
       
-#       # normalize the weights if activation function is ReLu
-#       if acti_fun == 'ReLu':
+      # normalize the weights 
       Weights = [batch_normalize(Weights[i]) for i in range(len(Weights))]
 
       # Biases updates
@@ -590,8 +562,6 @@ def nadam(epoch, m_w, m_b, v_w, v_b, Weights, bias,
 
   for x, y in zip(X_train, y_train):
 
-    #x = np.float128(x)
-
     ## Forward propagation
     a_out, h_out, y_dash = forward_propagation(Weights, bias, x, L, acti_fun, weight_init)
 
@@ -606,12 +576,8 @@ def nadam(epoch, m_w, m_b, v_w, v_b, Weights, bias,
 
     if num_points_seen%batch_size==0:
         
-      # normalize the gradient if activation function is ReLu
-      #if acti_fun == 'ReLu':
+      # normalize the gradient 
       dW = [batch_normalize(dW[i]) for i in range(len(dW))]
-
-      ## Add L2 regularization penalty to gradient
-      #dW = [dW[i] + L2_decay*Weights[i]/batch_size for i in range(len(dW))]
 
       #compute intermediate values
       m_w = [beta1*m_w[i] + (1-beta1)*dW[i] for i in range(len(m_w))]
@@ -629,6 +595,7 @@ def nadam(epoch, m_w, m_b, v_w, v_b, Weights, bias,
       # Weights updates
       Weights = [Weights[i] - (learning_rate/np.sqrt(v_w_hat[i]+eps))*(beta1*m_w_hat[i]+(1-beta1)*dW[i]/(1-beta1**(epoch+1))) for i in range(len(Weights))]
       
+      # weights normalization
       Weights = [batch_normalize(Weights[i]) for i in range(len(Weights))]
 
       # Biases updates
