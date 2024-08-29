@@ -1,4 +1,4 @@
-# CS6910_Assignment1<br />
+# Neural network from scratch<br />
 I have implemented the gradient descent and its variant algorithm in python using Numpy library, matplotlib and keras(for importing dataset only).<br />
 
 I have used fashion_mnist dataset  and divided it into train, validation and test data. later for comparison i have used mnist dataset.<br />
